@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NasiPadang</title>
+
+    <!-- Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- AlpineJs -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- App -->
+    <script src="src/app.js" async></script>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar" x-data>
+        <a href="#" class="navbar-logo">Salero<span>Awak</span></a>
+
+        <div class="navbar-nav">
+            <a href="#home">Home</a>
+            <a href="#about">Tentang Kami</a>
+            <a href="#menu">Menu</a>
+            <a href="#products">Produk</a>
+            <a href="#contact">Kontak</a>
+        </div>
+
+        <div class="navbar-extra">
+            <a href="#" id="search-button"><i class="fa-solid fa-magnifying-glass fa-2x"></i></a>
+            <a href="#" id="shopping-cart-button">
+                <i class="fa-solid fa-cart-shopping fa-2x"></i>
+                <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+            </a>
+            <a href="#" id="hamburger-menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+        </div>
+
+        <!-- Search Form Start -->
+        <div class="search-form">
+            <input type="search" id="search-box" placeholder="Search Here">
+            <label for="search-box"><i class="fa-solid fa-magnifying-glass"></i></label>
+        </div>
+        <!-- Search Form End -->
+
+        <!-- Shopping Cart Start -->
+        <div class="shopping-cart">
+            <template x-for="(item, index) in $store.cart.items" x-keys="index">
+            <div class="cart-item">
+                <img :src="`img/products/${item.img}`" :alt="item.name">
+                <div class="item-detail">
+                    <h3 x-text="item.name"></h3>
+                    <div class="item-price">
+                        <span x-text="rupiah(item.price)"></span> &times;
+                        <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+                        <span x-text="item.quantity"></span>
+                        <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+                        <span x-text="rupiah(item.total)"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem;">Cart Is Empty</h4>
+        <h4 x-show="$store.cart.items.length">Total: <span x-text="rupiah($store.cart.total)"></span></h4>
+
+        <div class="form-container" x-show="$store.cart.items.length">
+            <form action="" id="checkoutForm">
+                <input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
+                <input type="hidden" name="total" x-model="$store.cart.total">
+                <h5>Customer Detail</h5>
+
+                <label for="name">
+                    <span>Name</span>
+                    <input type="text" name="name" id="name">
+                </label>
+                <label for="email">
+                    <span>Email</span>
+                    <input type="email" name="email" id="email">
+                </label>
+                <label for="phone">
+                    <span>Phone</span>
+                    <input type="number" name="phone" id="phone" autocomplete="off">
+                </label>
+
+                <button class="checkout-button disabled" type="submit" id="checkout-button"
+                value="checkout">Checkout</button>
+            </form>
+        </div>
+        </div>
+        <!-- Shopping Cart End -->
+
+    </nav>
+    <!-- Navbar End -->
+    
+    <!-- Hero Section Start -->
+    <section class="hero" id="home">
+        <main class="content">
+            <h1>Pedas Gurih <span>Penuh Cerita</span></h1>
+            <p>Restoran Nasi Padang yang mendunia dan mempunya cita rasa yang otentik asli minang</p>
+            <div x-data="{ isPlaying: false }">
+                <button @click="isPlaying = !isPlaying">
+                    <span x-text="isPlaying ? 'Pause Audio' : 'Play Audio'"></span>
+                </button>
+                <audio x-ref="audioElement" :src="isPlaying ? 'audio/minag.mp3' : ''" x-bind:autoplay="isPlaying" x-on:ended="isPlaying = false"></audio>
+            </div>            
+        </main>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- About Section Start -->
+    <section id="about" class="about">
+        <h2><span>Tentang</span> Kami</h2>
+
+        <div class="row">
+            <div class="about-img">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ow-MJuto0SE?si=WhMjck0Fhb9luurf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p class="copyright">&copy; midnight_studio 2021</p>
+            </div>
+            <div class="content">
+                <h3>Kenapa Memilih Restoran Kami?</h3>
+                <p>Di restoran nasi Padang kami, Anda akan menemukan rasa yang otentik dari makanan Padang. Kami hanya menggunakan bahan-bahan berkualitas tinggi yang segar dan terbaik, untuk memastikan setiap hidangan yang disajikan tidak hanya enak, tapi juga sehat.</p>
+                <p>Nikmati cita rasa asli Minang di setiap suapan. Pilih restoran Salero Awak untuk pengalaman kuliner yang tak terlupakan!</p>
+            </div>
+        </div>
+    </section>
+    <!-- About Section End -->
+    
+    <!-- Menu Section Start -->
+    <section id="menu" class="menu">
+        <h2><span>Menu</span> Kami</h2>
+        <p>Berikut ini daftar menu hidangan yang ada di restoran Salero Awak</p>
+
+        <div class="row">
+            <div class="menu-card">
+                <img src="img/menu/1.jpg" alt="Esspreso" class="menu-card-img">
+                <h3 class="menu-card-tittle">- Rendang</h3>
+                <p class="menu-card-price">IDR 30K</p>
+            </div>
+            <div class="menu-card">
+                <img src="img/menu/2.jpg" alt="Esspreso" class="menu-card-img">
+                <h3 class="menu-card-tittle">- Ayam Bakar</h3>
+                <p class="menu-card-price">IDR 20K</p>
+            </div>
+            <div class="menu-card">
+                <img src="img/menu/3.jpg" alt="Esspreso" class="menu-card-img">
+                <h3 class="menu-card-tittle">- Ikan Bakar</h3>
+                <p class="menu-card-price">IDR 25K</p>
+            </div>
+            <div class="menu-card">
+                <img src="img/menu/4.jpg" alt="Esspreso" class="menu-card-img">
+                <h3 class="menu-card-tittle">- Telor Barendo</h3>
+                <p class="menu-card-price">IDR 10K</p>
+            </div>
+            <div class="menu-card">
+                <img src="img/menu/5.jpg" alt="Esspreso" class="menu-card-img">
+                <h3 class="menu-card-tittle">- Gulai Tunjang</h3>
+                <p class="menu-card-price">IDR 40K</p>
+            </div>
+            <div class="menu-card">
+                <img src="img/menu/6.jpg" alt="Esspreso" class="menu-card-img">
+                <h3 class="menu-card-tittle">- Gulai Kepala Ikan</h3>
+                <p class="menu-card-price">IDR 25K</p>
+            </div>
+        </div>  
+    </section>
+    <!-- Menu Section End -->
+
+    <!-- Products Section start -->
+  <section class="products" id="products" x-data="products">
+    <h2><span>Menu</span> Kami</h2>
+    <p>Berikut ini beberapa menu andalan kami di restoran Salero Awak</p>
+
+    <div class="row">
+        <template x-for="(item, index) in items" x-key="index">
+            <div class="product-card">
+        <div class="product-icons">
+          <a href="#" @click.prevent="$store.cart.add(item)"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <div class="product-image">
+          <img :src="`img/products/${item.img}`" :alt="item.name">
+        </div>
+        <div class="product-content">
+          <h3 x-text="item.name"></h3>
+          <div class="product-price"><span x-text="rupiah(item.price)"></span></div>
+        </div>
+            </div>
+    </template>
+    </div>
+  </section>
+  <!-- Products Section end -->
+
+<!-- Contact Section -->
+<section id="contact" class="contact" 
+x-data="{
+    isSubmitting: false,
+    handleGoogleFormSubmission() {
+        this.isSubmitting = true; // Mulai indikator loading
+        const contactForm = document.forms['nasipadang-contact-form'];
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz1w7EklhkFDJxHv4kzGtUfi2xpba6dKIZ2XM3JNKoYQX5C8LpoFdR15LcuWXMH2Etg/exec';
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: new FormData(contactForm)
+        })
+        .then(response => {
+            console.log('Success!', response);
+            alert('Form berhasil dikirim!');
+            contactForm.reset();
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert('Gagal mengirim form, coba lagi.');
+        })
+        .finally(() => {
+            this.isSubmitting = false; // Hentikan indikator loading
+        });
+    }
+}">
+<h2><span>Kontak</span> Kami</h2>
+<p>Jika anda ingin menghubungi kami silahkan isi data diri anda dibawah ini</p>
+
+<div class="row">
+    <!-- Google Maps -->
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.179816242977!2d106.8210956735566!3d-6.370770862316516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ec1cabb59bdf%3A0x28b4f84e4677f329!2sPoliteknik%20Negeri%20Jakarta!5e0!3m2!1sid!2sid!4v1732973666455!5m2!1sid!2sid"
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade" 
+        class="map">
+    </iframe>
+
+    <!-- Contact Form -->
+    <form action="" name="nasipadang-contact-form">
+        <div class="input-group">
+            <i class="fa-regular fa-user fa-2x"></i>
+            <input type="text" placeholder="Nama Anda" name="nama">
+        </div>
+        <div class="input-group">
+            <i class="fa-regular fa-envelope fa-2x"></i>
+            <input type="text" placeholder="E-mail Anda" name="email">
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-phone fa-2x"></i>
+            <input type="text" placeholder="No Handphone" name="pesan">
+        </div>
+        <button type="submit" class="btn" @click.prevent="handleGoogleFormSubmission" x-bind:disabled="isSubmitting">
+            <span x-show="!isSubmitting">Kirim Pesan</span>
+            <span x-show="isSubmitting">Mengirim...</span>
+        </button>
+    </form>
+</div>
+</section>
+
+    <!-- Footer Start -->
+    <footer>
+        <div class="socials">
+            <a href="#"><i class="fa-brands fa-instagram fa-2x"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter fa-2x"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok fa-2x"></i></a>
+            <a href="#"><i class="fa-brands fa-whatsapp fa-2x"></i></a>
+        </div>
+        <div class="links">
+            <a href="#home">Home</a>
+            <a href="#about">Tentang Kami</a>
+            <a href="#menu">Menu</a>
+            <a href="#contact">Kontak</a>
+        </div>
+
+        <div class="credit">
+            <p>Created <a href="">By Kelompok2</a> | &copy; 2024</p>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- JAVASCRIPT -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
